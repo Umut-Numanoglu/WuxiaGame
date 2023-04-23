@@ -1,48 +1,43 @@
-from flask import request
-from flask_restful import Resource
-from werkzeug.exceptions import BadRequest, NotFound
+from flask import jsonify, request
+from werkzeug.security import check_password_hash
 
 from services import UserService
-from utils.security import generate_token, verify_password
 
 
-class UsersController(Resource):
-    def __init__(self, user_service: UserService):
-        self.user_service = user_service
+class UserController:
+    def __init__(self, app):
+        self.user_service = UserService()
 
-    def post(self):
-        data = request.get_json()
+        @app.route("/api/user/register", methods=["POST"])
+        def register():
+            username = request.form.get("username")
+            password = request.form.get("password")
 
-        if not data:
-            raise BadRequest("No input data provided")
+            user = self.user_service.get_user_by_username(username)
 
-        username = data.get("username")
-        password = data.get("password")
+            if not username or not password:
+                return jsonify({"message": "Missing username or password"}), 400
 
-        if not username or not password:
-            raise BadRequest("Invalid input data")
+            if user:
+                return jsonify({"message": "User already exists"}), 409
+            else:
+                self.user_service.create_user(username, password)
+                return jsonify({"message": "User created successfully"}), 201
 
-        user = self.user_service.create_user(username, password)
+        @app.route("/api/user/login", methods=["POST"])
+        def login():
+            username = request.form.get("username")
+            password = request.form.get("password")
 
-        return {"message": "User created successfully", "data": {"id": user.id, "username": user.username}}, 201
+            if not username or not password:
+                return jsonify({"message": "Missing username or password"}), 400
 
-    def login(self):
-        data = request.get_json()
+            user = self.user_service.get_user_by_username(username)
 
-        if not data:
-            raise BadRequest("No input data provided")
+            if not user or not check_password_hash(user.password, password):
+                return jsonify({"message": "Invalid username or password"}), 401
 
-        username = data.get("username")
-        password = data.get("password")
+            # generate access token and return it as response
+            access_token = user.generate_access_token()
 
-        if not username or not password:
-            raise BadRequest("Invalid input data")
-
-        user = self.user_service.get_user_by_username(username)
-
-        if not user or not verify_password(password, user.password):
-            raise NotFound("Invalid username or password")
-
-        token = generate_token(user.id)
-
-        return {"message": "User logged in successfully", "data": {"token": token.decode("utf-8")}}, 200
+            return jsonify({"access_token": access_token.decode("utf-8")}), 200

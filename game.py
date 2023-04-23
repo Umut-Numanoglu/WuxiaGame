@@ -1,3 +1,4 @@
+from utils.util import create_tables
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
@@ -13,6 +14,8 @@ from inventory.inventory_repository import InventoryRepository
 from cultivation.cultivation_controller import CultivationController
 from cultivation.cultivation_repository import CultivationRepository
 from users.users_controller import UsersController
+from users.users_repository import UsersRepository
+
 
 def configure(binder: Binder) -> Binder:
     binder.bind(Database, to=Database())
@@ -31,11 +34,13 @@ app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'RFGSDFGS§$%§sdf34rtsdfs§"$'  # Replace with your own secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
-
+# Create tables at startup
+with app.app_context():
+    db.create_all()
+    create_tables()
 
 
 @app.route("/")

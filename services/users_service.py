@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from typing import List
-from models import User, db
+from models.users import User, db
 
 
 class UserService:
@@ -17,9 +17,9 @@ class UserService:
         """Returns the user with the given ID."""
         return User.query.filter_by(id=user_id).first()
 
-    def get_user_by_username(self, username: str) -> User:
+    def get_user_by_username(self, username: str):
         """Returns the user with the given username."""
-        return User.query.filter_by(username=username).first()
+        return User.query.filter_by(username=username).first() or None
 
     def check_password(self, user: User, password: str) -> bool:
         """Checks if the given password is correct for the given user."""

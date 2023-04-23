@@ -1,21 +1,22 @@
 > Hi ChatGPT, 
     we are going to write an API multiplayer based game written in Python, about chinese cultivation novels. 
     Can you describe all the steps that will be required to go from an empty project to a working game? Functionality should include:
-    - Players can reqister and create an account over API per POST request
-    - Player gets a bearer token by logging in that they can use for other commands
-    - The game characters have attributes like Cultivation Level, Qi Cultivation, alchemy level, artificier level, health, inspiration 
-    - Players can use /metitade endpoint to increase their Qi Cultivation
-    - Cultivation Levels are split in Steps
-    - First  step have substeps named in Order: Qi Condensation, Foundation Establishment,  Core Formation, Nascent Soul,  Spirit Severing, Dao Seeking
-    - Second Step have substeps named in order: True Immortal, Immortal Emperor, Allheaven Emperor Immortal, Allheaven Dao Immortal, Ancient Realm
-    - Third Step only has one substep called Dao Realm
-    - Fourth Step has two steps in order: Daosource and Ancestor Realm
-    - Players have an inventory where they can store items. An endpoint /inventory should be available to players to see the content of their inventory
-    - Items have different categories: weapons, cultivation tools, pills, and plants
-    - Players can use /delve endpoint to journey to old ruins. This endpoint will add a timer where where the player can not take other action, after the end of the timer, they have a chance to get items added to their inventory but also a chance to take a decrease in health or Qi cultivation
-    - Players can use /plant endpoint together with the name of an item in their inventory to remove that item from their inventory and get multiple copies of this item after a period of time
-    - Every action have a chance to increase inspiration stat
-    - When Inspiration stat gets to 100 players can use /breakthrough endpoint to get to the next level in their Cultivation Level
+
+- Players can reqister and create an account over API per POST request
+- Player gets a bearer token by logging in that they can use for other commands
+- The game characters have attributes like Cultivation Level, Qi Cultivation, alchemy level, artificier level, health, inspiration 
+- Players can use /metitade endpoint to increase their Qi Cultivation
+- Cultivation Levels are split in Steps
+- First  step have substeps named in Order: Qi Condensation, Foundation Establishment,  Core Formation, Nascent Soul,  Spirit Severing, Dao Seeking
+- Second Step have substeps named in order: True Immortal, Immortal Emperor, Allheaven Emperor Immortal, Allheaven Dao Immortal, Ancient Realm
+- Third Step only has one substep called Dao Realm
+- Fourth Step has two steps in order: Daosource and Ancestor Realm
+- Players have an inventory where they can store items. An endpoint /inventory should be available to players to see the content of their inventory
+- Items have different categories: weapons, cultivation tools, pills, and plants
+- Players can use /delve endpoint to journey to old ruins. This endpoint will add a timer where where the player can not take other action, after the end of the timer, they have a chance to get items added to their inventory but also a chance to take a decrease in health or Qi cultivation
+- Players can use /plant endpoint together with the name of an item in their inventory to remove that item from their inventory and get multiple copies of this item after a period of time
+- Every action have a chance to increase inspiration stat
+- When Inspiration stat gets to 100 players can use /breakthrough endpoint to get to the next level in their Cultivation Level
 
 > Sure, I can give you a general idea of the steps that you will need to take to create your API multiplayer game in Python. Here is an overview of the steps you will need to take:
     
